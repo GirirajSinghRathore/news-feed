@@ -1,6 +1,7 @@
 package com.gsr.newsfeed.service;
 
 import com.gsr.newsfeed.model.Follow;
+import com.gsr.newsfeed.model.Post;
 import com.gsr.newsfeed.model.Session;
 import com.gsr.newsfeed.model.User;
 import com.gsr.newsfeed.repository.FollwerRepository;
@@ -52,9 +53,9 @@ public class UserService {
         if(session.isEmpty()){
             throw new Exception("No Logged In User Found");
         }
-        User follwer = userRepository.getById(session.get().getUserId());
-        User follwes = userRepository.getById(id);
-        if(follwes==null){
+        User follwer = userRepository.findById(session.get().getUserId()).get();
+        Optional<User> follwes = userRepository.findById(id);
+        if(follwes.isEmpty()){
             throw new Exception("Please enter valid Id");
         }
 //        Set<User> l = userRepository.getById(session.get().getUserId()).getFollows();
@@ -63,7 +64,7 @@ public class UserService {
 //        return userRepository.save(follwer);
         Follow follow = new Follow();
         follow.setFollower(follwer);
-        follow.setFollowee(follwes);
+        follow.setFollowee(follwes.get());
         follwerRepository.save(follow);
         return follow;
     }
