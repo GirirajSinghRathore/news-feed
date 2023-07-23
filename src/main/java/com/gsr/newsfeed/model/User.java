@@ -17,10 +17,10 @@ public class User extends BaseModel {
 
     private String email;
     private String password;
-    @ManyToMany
-    private Set<User> follows;
-    @ManyToMany(mappedBy="follows")
-    private Set<User> followers;
+//    @ManyToMany
+//    private Set<User> follows;
+//    @ManyToMany(mappedBy="follows")
+//    private Set<User> followers;
     @OneToMany
     private List<Post> posts;
     @OneToMany

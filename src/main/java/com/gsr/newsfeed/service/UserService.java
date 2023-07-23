@@ -1,17 +1,24 @@
 package com.gsr.newsfeed.service;
 
+import com.gsr.newsfeed.model.Follow;
 import com.gsr.newsfeed.model.Session;
 import com.gsr.newsfeed.model.User;
+import com.gsr.newsfeed.repository.FollwerRepository;
 import com.gsr.newsfeed.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private FollwerRepository follwerRepository;
     @Autowired
     private SessionService sessionService;
     public User signUp(String name,String email,String password) throws Exception {
@@ -39,5 +46,25 @@ public class UserService {
         }else {
             throw new Exception("Wrong Password");
         }
+    }
+    public Follow follow(Long id) throws Exception {
+        Optional<Session> session = sessionService.currentLoggedInUser();
+        if(session.isEmpty()){
+            throw new Exception("No Logged In User Found");
+        }
+        User follwer = userRepository.getById(session.get().getUserId());
+        User follwes = userRepository.getById(id);
+        if(follwes==null){
+            throw new Exception("Please enter valid Id");
+        }
+//        Set<User> l = userRepository.getById(session.get().getUserId()).getFollows();
+//        follwer.getFollows().
+//                add(follwes);
+//        return userRepository.save(follwer);
+        Follow follow = new Follow();
+        follow.setFollower(follwer);
+        follow.setFollowee(follwes);
+        follwerRepository.save(follow);
+        return follow;
     }
 }

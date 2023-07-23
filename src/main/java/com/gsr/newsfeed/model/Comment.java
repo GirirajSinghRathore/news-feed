@@ -5,6 +5,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Comment extends BaseModel{
     private Comment onComment;
     @OneToMany(mappedBy = "onComment")
     private List<Comment> replies;
+    @CreatedDate
     private Date generated_at;
     private int likes;
     private int dislikes;
